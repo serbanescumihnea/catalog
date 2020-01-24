@@ -51,7 +51,7 @@ $materii = array("Romana","Matematica","Fizica","Chimie","Biologie","Informatica
         }
         if($result->num_rows == 0)
         {
-
+            echo "-";
         }
         else {
             if($result->num_rows > 0) {
@@ -60,7 +60,10 @@ $materii = array("Romana","Matematica","Fizica","Chimie","Biologie","Informatica
                 $sum = $sum + $row["nota"];
                 $count = $count+1;
             }
-        } }
+        }else{
+
+            }
+        }
 
         if($sum!=0){
         $medie = $sum/$count;
@@ -69,7 +72,11 @@ $materii = array("Romana","Matematica","Fizica","Chimie","Biologie","Informatica
         }
 
         echo "</td>";
-        echo "<td>{$medie}</td>";
+        if($medie>0) {
+            echo "<td>{$medie}</td>";
+        }else{
+            echo"<td>-</td>";
+        }
     }
     ?>
     </tr
