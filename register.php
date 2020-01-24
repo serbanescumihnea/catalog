@@ -106,7 +106,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <body>
 <div class="ce-header">
     <img src="resources/imgs/logo.png" class="ce-logo" style="margin-bottom:3em">
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+    <form class="user-interact" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
         <div class="form-group">
             <input type="username" placeholder="Nume" name='username' class="form-control">
         </div>

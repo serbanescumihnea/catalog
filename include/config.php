@@ -7,5 +7,5 @@ $dbi = mysqli_connect(HOST, USER, PASS, DB);
 if($dbi === false){
     die("ERROR: Could not connect. " . mysqli_connect_error());
 }
-echo "Connected successfully";
+//echo "Connected successfully";
 ?>

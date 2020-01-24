@@ -1,5 +1,6 @@
 <?php
 include_once "include/functions.php";
+include_once "include/config.php";
 //$cookieParams = session_get_cookie_params();
 //session_set_cookie_params($cookieParams["lifetime"], $cookieParams["path"], ".code-end.ro", $cookieParams["secure"]=true, $cookieParams["httponly"]=true);
 session_name('cnec-secure');
@@ -56,7 +57,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION["loggedin"] = true;
                             $_SESSION["name"] = $name;
                             // Redirect user to welcome page
-                            header("location: admin.php");
+                            header("location: catalog");
                         } else{
                             // Display an error message if password is not valid
                             $password_err = "The password you entered was not valid.";
@@ -97,9 +98,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <body>
 <div class="hm-header">
     <img src="resources/imgs/logo.png" class="hm-logo" style="margin-bottom:3em">
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+    <h2 class="title1">Catalog CNEC</h2><br>
+    <form class="user-interact" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
         <div class="form-group">
-            <input type="username" placeholder="Username" name='username' class="form-control">
+            <input type="username" placeholder="Nume" name='username' class="form-control">
         </div>
         <div class="form-group">
             <input type="password" placeholder="Parola" name='password' class="form-control">

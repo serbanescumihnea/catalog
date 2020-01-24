@@ -20,14 +20,30 @@ body {
 }
 
 .hm-logo {
-    align:center;
     margin: auto;
     height: 120%;
     width: 150px;
     display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 25%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 25%;
+}
+.title1{
+    text-align: center;
+    color: black;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+.user-interact{
+    text-align: center;
+}
+@media (pointer:coarse) {
+    .user-interact{
+        width: 60%;
+        height: 50%;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
 }
 
 @media only screen and (max-width: 782px) {
