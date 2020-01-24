@@ -95,8 +95,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 </head>
 
 <body>
-<div class="ce-header">
-    <img src="resources/imgs/logo.png" class="ce-logo" style="margin-bottom:3em">
+<div class="hm-header">
+    <img src="resources/imgs/logo.png" class="hm-logo" style="margin-bottom:3em">
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
         <div class="form-group">
             <input type="username" placeholder="Username" name='username' class="form-control">

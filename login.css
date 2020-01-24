@@ -2,14 +2,16 @@ body {
     margin: 0;
     color: white;
     font-size: 14px;
-    background: black;
+    background: #F7F7F7;
 }
 
 .s-button {
     width: 100%;
+    background: #3366FF;
+    color:white;
 }
 
-.ce-header {
+.hm-header {
     width: 500px;
     position: absolute;
     top: 50%;
@@ -17,9 +19,15 @@ body {
     transform: translate(-50%, -50%);
 }
 
-.ce-logo {
+.hm-logo {
+    align:center;
     margin: auto;
-    width: 500px;
+    height: 120%;
+    width: 150px;
+    display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 25%;
 }
 
 @media only screen and (max-width: 782px) {
