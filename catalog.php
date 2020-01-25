@@ -8,6 +8,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
 }
+$noteAdv = false;
 $materii = array("Romana","Matematica","Fizica","Chimie","Biologie","Informatica","TIC","Franceza","Germana","Istorie","Geografie","Religie","Logica","Muzica","Desen")
 ?>
 <head>
@@ -27,59 +28,131 @@ $materii = array("Romana","Matematica","Fizica","Chimie","Biologie","Informatica
   </a>
     </div>
     <div class="nume_elev" align="center"><?php echo $_SESSION["name"]; ?></div>
+
 </nav>
-<table>
+<nav id="nav2" class="navbar navbar-dark bg-primary">
+    <div class="container2">
+    <a class="idk" href="<?php if(isset($_GET['note'])){
+        echo"catalog?absente";
+    }else if(isset($_GET['absente'])){
+        echo"catalog?note";
+    }
+    ?>">
+        <?php if(isset($_GET['note'])){
+            echo"Absente";
+        }else if(isset($_GET['absente'])){
+            echo"Note";
+        }
+        ?>
+    </a>
+    </div>
+</nav>
+
+    <?php
+    if(isset($_GET['note'])) {
+        echo "<table>
     <tr>
         <th>Materie</th>
         <th>Note</th>
         <th>Medie</th>
-    </tr>
-    <?php
-    for($i = 0; $i<=count($materii)-1;$i++){
-        $sum = 0;
-        $count = 0;
-        echo "<tr>
+    </tr>";
+        for ($i = 0; $i <= count($materii) - 1; $i++) {
+            $sum = 0;
+            $count = 0;
+            echo "<tr>
         <td>{$materii[$i]}</td>
         ";
-        $sql = "SELECT nume, materie, nota FROM note WHERE nume='{$_SESSION["name"]}' AND materie='{$materii[$i]}'";
+            $sql = "SELECT nume, materie, nota FROM note WHERE nume='{$_SESSION["name"]}' AND materie='{$materii[$i]}'";
+            $result = $dbi->query($sql);
+            echo "<td>";
+            if ($result === false) {
+                user_error("Query failed: " . $dbi->error . "<br />\n$sql");
+                return false;
+            }
+            if ($result->num_rows == 0) {
+                echo "-";
+            } else {
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        $count = $count + 1;
+                        if ($count < $result->num_rows) {
+                            echo "{$row["nota"]},";
+                        } else {
+                            echo "{$row["nota"]}";
+                        }
+                        $sum = $sum + $row["nota"];
+                    }
+                } else {
+
+                }
+            }
+
+            if ($sum != 0) {
+                $medie = $sum / $count;
+            } else {
+                $medie = 0;
+            }
+
+            echo "</td>";
+            if ($medie > 0) {
+                echo "<td>{$medie}</td>";
+            } else {
+                echo "<td>-</td>";
+            }
+        }
+        echo "</tr
+        <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        </tr></table>";
+    }else if (isset($_GET['absente'])) {
+        echo "<table>
+    <tr>
+        <th>Materie</th>
+        <th>Data</th>
+        <th>Motivata</th>
+    </tr>";
+
+        $sql = "SELECT materie, data, activa FROM absente WHERE nume='{$_SESSION["name"]}'";
         $result = $dbi->query($sql);
-        echo "<td>";
-        if($result === false)
-        {
-            user_error("Query failed: ".$dbi->error."<br />\n$sql");
+        //echo "<tr>";
+        if ($result === false) {
+            user_error("Query failed: " . $dbi->error . "<br />\n$sql");
             return false;
         }
-        if($result->num_rows == 0)
-        {
-            echo "-";
-        }
-        else {
-            if($result->num_rows > 0) {
-            while($row = $result->fetch_assoc()) {
-                echo "{$row["nota"]},";
-                $sum = $sum + $row["nota"];
-                $count = $count+1;
+        if ($result->num_rows == 0) {
+            echo "<tr>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  </tr>";
+        } else {
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    echo "<tr>
+                        <td>{$row["materie"]}</td>
+                        ";
+                    echo "<td>{$row["data"]}";
+                    echo "</td>";
+                    if ($row["activa"] == 1) {
+                        echo "<td>NU</td>";
+                    } else {
+                        echo "<td>DA</td>";
+                    }
+                }
             }
-        }else{
-
-            }
         }
 
-        if($sum!=0){
-        $medie = $sum/$count;
-        }else{
-            $medie=0;
-        }
-
-        echo "</td>";
-        if($medie>0) {
-            echo "<td>{$medie}</td>";
-        }else{
-            echo"<td>-</td>";
-        }
+        echo "</tr
+        <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        </tr></table>";
     }
     ?>
-    </tr
-</table>
+
+
 
 </body>
