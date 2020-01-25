@@ -31,7 +31,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Validate credentials
     if(empty($name_err) && empty($password_err)){
         // Prepare a select statement
-        $sql = "SELECT name, password FROM users WHERE name = ?";
+        $sql = "SELECT name, password, permissionLevel FROM users WHERE name = ?";
 
         if($stmt = mysqli_prepare($dbi,$sql)){
             // Bind variables to the prepared statement as parameters
@@ -48,7 +48,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 // Check if username exists, if yes then verify password
                 if(mysqli_stmt_num_rows($stmt) == 1){
                     // Bind result variables
-                    mysqli_stmt_bind_result($stmt, $name, $hashed_password);
+                    mysqli_stmt_bind_result($stmt, $name, $hashed_password, $permissionLevelparam);
                     if(mysqli_stmt_fetch($stmt)){
                         if(password_verify($password,$hashed_password)){
                             // Password is correct, so start a new session
@@ -56,8 +56,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             // Store data in session variables
                             $_SESSION["loggedin"] = true;
                             $_SESSION["name"] = $name;
+                            $_SESSION["permLvl"]=$permissionLevelparam;
                             // Redirect user to welcome page
-                            header("location: catalog");
+                            if($_SESSION["permLvl"]==0) {
+                                header("location: catalog?note");
+                            }elseif ($_SESSION["permLvl"]==1){
+                                header("location: profesor?manage");
+                            }elseif ($_SESSION["permLvl"]==2){
+                                header("location: admin?");
+                            }
                         } else{
                             // Display an error message if password is not valid
                             $password_err = "The password you entered was not valid.";

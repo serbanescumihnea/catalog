@@ -7,7 +7,12 @@ session_start();
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
+}else if(!isset($_SESSION["permLvl"]) ||$_SESSION["permLvl"]==1){
+    header("location: profesor");
+}else if(!isset($_SESSION["permLvl"]) ||$_SESSION["permLvl"]==2){
+    header("location: admin");
 }
+
 $noteAdv = false;
 $materii = array("Romana","Matematica","Fizica","Chimie","Biologie","Informatica","TIC","Franceza","Germana","Istorie","Geografie","Religie","Logica","Muzica","Desen")
 ?>
@@ -32,13 +37,15 @@ $materii = array("Romana","Matematica","Fizica","Chimie","Biologie","Informatica
 </nav>
 <nav id="nav2" class="navbar navbar-dark bg-primary">
     <div class="container2">
-    <a class="idk" href="<?php if(isset($_GET['note'])){
+        <a class="idk" href="<?php
+     if(isset($_GET['note'])){
         echo"catalog?absente";
     }else if(isset($_GET['absente'])){
         echo"catalog?note";
     }
     ?>">
-        <?php if(isset($_GET['note'])){
+        <?php
+        if(isset($_GET['note'])){
             echo"Absente";
         }else if(isset($_GET['absente'])){
             echo"Note";
