@@ -52,8 +52,10 @@ if(!isset($_SESSION["permLvl"]) ||!$_SESSION["permLvl"]>=1){
     </div>
 </nav>
 <?php
-if(isset($_GET['manage'])) {
-    $claseListate = [];
+$claseListate=array();
+if(isset($_GET['manage'])&& $_GET["manage"]==null) {
+    global $claseListate;
+
     echo "<table><tr><th class='text-center'>Clasa</th></tr>";
     $sql = "SELECT class FROM users";
     $result = $dbi->query($sql);
@@ -68,18 +70,46 @@ if(isset($_GET['manage'])) {
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 if(!in_array($row['class'],$claseListate)) {
-                    echo "<tr><td class='text-center'><a class='xd' href='profesor?manage?{$row['class']}'>{$row['class']}</a></td></tr>";
+                    echo "<tr><td class='text-center'><a class='xd' href='profesor?manage={$row['class']}'>{$row['class']}</a></td></tr>";
                     array_push($claseListate, $row['class']);
                 }
             }
         }
     }
+    echo "</table>";
 }
-?>
-</table>
+    $clase2 = array();
+    $sql3 = "SELECT class FROM users";
+    $result = $dbi->query($sql3);
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            if (!in_array($row['class'], $clase2)) {
+                array_push($clase2, $row['class']);
+            }
+        }
+        for ($i = 0; $i <= count($clase2)-1; $i++) {
+            //echo $clase2[$i];
+            if (($_GET["manage"]==$clase2[$i])) {
+                    echo "<table><tr><th class='text-center'>Elev</th></tr>";
+                    $sql2 = " SELECT name FROM users WHERE class='{$clase2[$i]}'";
+                    $result2 = $dbi->query($sql2);
+                    if ($result2 === false) {
+                        user_error("Query failed: " . $dbi->error . "<br />\n$sql2");
+                        return false;
+                    }
+                    if ($result2->num_rows == 0) {
 
-<?php
-
+                    } else {
+                        if ($result2->num_rows > 0) {
+                            while ($row = $result2->fetch_assoc()) {
+                                $redirectUrl = "elev.php?'{$row['name']}}'";
+                                echo "<tr><td class='text-center'><a class='ye' href='../catalogCNEC/elev.php?{$row['name']}'>{$row["name"]}</a></td></tr>";
+                            }
+                        }
+                    }
+                }
+            }
+    }
 ?>
 
 
